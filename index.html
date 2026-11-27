@@ -64,9 +64,10 @@ h2{font-size:clamp(19px,4vw,25px);color:var(--navy)}
 .biz.featured{border:2px solid #e6bd27}
 .biz h3{margin:0 0 12px;color:var(--navy);font-size:19px;text-align:center}
 .biz .tag{display:inline-block;background:#fff2b9;color:#6b5100;border-radius:20px;padding:3px 9px;font-size:12px;font-weight:800;margin-bottom:8px}
-.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px;width:100%}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px;width:100%}
 .action-btn{text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;min-width:0;background:var(--blue);color:white;padding:12px 8px;font-size:14px;line-height:1.2}
 .action-btn.wa{background:var(--green)}
+.action-btn.detail{grid-column:1 / -1;justify-self:center;width:calc((100% - 8px)/2)}
 .empty,.status{padding:14px;color:var(--muted);text-align:center}
 footer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
 footer a{display:flex;justify-content:center;align-items:center;text-align:center;min-height:50px;border-radius:12px;text-decoration:none;font-weight:800;padding:10px}
@@ -96,6 +97,7 @@ input[type=search]{width:100%;padding:13px;border:1px solid var(--line);border-r
 @media(max-width:380px){
   .actions{gap:5px}
   .action-btn{font-size:12px;padding:11px 4px}
+  .action-btn.detail{width:calc((100% - 5px)/2)}
 }
 @media(min-width:650px){
   .locality-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -352,24 +354,27 @@ function renderResults(){
     const actions=document.createElement("div");
     actions.className="actions";
 
-    if(item.tel1){
-      const a=document.createElement("a");
-      a.className="action-btn";
-      a.href="tel:"+item.tel1.replace(/\D/g,"");
-      a.textContent="☎ Llamar";
-      actions.appendChild(a);
+    const phones=[item.tel1,item.tel2].filter(Boolean);
+    phones.forEach((phone,index)=>{
+      const numberLabel=phones.length>1?" "+(index+1):"";
 
-      const w=document.createElement("a");
-      w.className="action-btn wa";
-      w.href=waUrl(item.tel1);
-      w.target="_blank";
-      w.rel="noopener";
-      w.textContent="WhatsApp";
-      actions.appendChild(w);
-    }
+      const call=document.createElement("a");
+      call.className="action-btn";
+      call.href="tel:"+phone.replace(/\D/g,"");
+      call.textContent="☎ Llamar"+numberLabel;
+      actions.appendChild(call);
+
+      const chat=document.createElement("a");
+      chat.className="action-btn wa";
+      chat.href=waUrl(phone);
+      chat.target="_blank";
+      chat.rel="noopener";
+      chat.textContent="Chatear"+numberLabel;
+      actions.appendChild(chat);
+    });
 
     const more=document.createElement("button");
-    more.className="action-btn";
+    more.className="action-btn detail";
     more.textContent="Ver ficha";
     more.addEventListener("click",()=>openDetail(item));
     actions.appendChild(more);
