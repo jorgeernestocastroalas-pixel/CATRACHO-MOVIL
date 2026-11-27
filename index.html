@@ -13,19 +13,19 @@
  --line:#79c7ed;--green:#159447;--shadow:0 4px 14px #06466a16;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:58px}
 body{margin:0;background:var(--sky);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.4}
 button,input{font:inherit}
 .app{width:min(100%,980px);margin:auto;padding:12px 12px 30px}
-header{background:transparent;border:0;border-radius:16px;padding:0;margin-bottom:12px;box-shadow:none;overflow:hidden}
-.logo{display:block;width:100%;height:auto;max-height:190px;object-fit:contain;border-radius:14px}
+header{background:transparent;border:0;border-radius:16px;padding:0;margin:0 0 12px;box-shadow:none;overflow:visible;text-align:center}
+.logo{display:block;width:100%;height:auto;max-height:210px;object-fit:contain;object-position:center;margin:0 auto;border-radius:14px}
 .banner-zone{position:fixed;left:0;right:0;z-index:30;display:flex;justify-content:center;align-items:center;background:rgba(191,234,255,.97);padding:3px 8px;min-height:46px;height:46px;border-bottom:1px solid #79c7ed}
 .banner-top{top:0}.banner-bottom{bottom:0;border-bottom:0;border-top:1px solid #79c7ed}
 .banner-inner{width:min(100%,400px);height:40px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .banner-inner img{display:block;width:auto;max-width:100%;height:auto;max-height:40px;object-fit:contain;cursor:pointer}
 .banner-inner iframe{border:0;max-width:100%;max-height:40px}
 body{padding-top:52px;padding-bottom:52px}
-.panel{background:rgba(255,255,255,.24);border:1px solid rgba(66,160,207,.42);border-radius:18px;padding:16px;margin:12px 0;box-shadow:none}
+.panel{background:rgba(255,255,255,.30);border:3px solid #fff;border-radius:18px;padding:16px;margin:14px 0;box-shadow:0 4px 14px rgba(6,70,106,.14);scroll-margin-top:60px}
 h1,h2,h3,p{margin-top:0}
 h1{font-size:clamp(22px,5vw,32px);color:var(--navy);margin-bottom:6px}
 h2{font-size:clamp(19px,4vw,25px);color:var(--navy)}
@@ -43,6 +43,8 @@ h2{font-size:clamp(19px,4vw,25px);color:var(--navy)}
 .hidden{display:none!important}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .business-list{display:grid;gap:12px}
+#results{scroll-margin-top:64px}
+#home{scroll-margin-top:60px}
 .biz{background:#fff;border:3px solid #fff;border-radius:15px;padding:14px;box-shadow:0 0 0 2px rgba(7,85,139,.28),0 5px 16px rgba(6,55,82,.20)}
 .biz.featured{border:2px solid #e6bd27}
 .biz h3{margin:0 0 6px;color:var(--navy);font-size:19px}
@@ -171,7 +173,7 @@ function renderCategories(){
  if(!cats.length){$("categoryGrid").innerHTML='<div class="empty">Todavía no hay categorías activas para esta localidad.</div>';return}
  cats.forEach(cat=>{
   const btn=document.createElement("button");btn.className="category-btn"+(selectedCategory===cat?" active":"");btn.textContent=cat;
-  btn.addEventListener("click",()=>{selectedCategory=selectedCategory===cat?"":cat;renderCategories();renderResults()});
+  btn.addEventListener("click",()=>{selectedCategory=selectedCategory===cat?"":cat;renderCategories();renderResults();requestAnimationFrame(()=>$("results").scrollIntoView({behavior:"smooth",block:"start"}));});
   $("categoryGrid").appendChild(btn);
  });
 }
@@ -282,9 +284,10 @@ async function findLocalityByGPS(){
  },{enableHighAccuracy:false,timeout:12000,maximumAge:300000});
 }
 function initWelcome(){
+ window.scrollTo({top:0,behavior:"instant"});
  const last=Number(localStorage.getItem("cm_welcome_closed")||0);
  if(Date.now()-last>24*60*60*1000)showModal("welcomeModal");
- $("welcomeClose").addEventListener("click",()=>{localStorage.setItem("cm_welcome_closed",String(Date.now()));hideModal("welcomeModal")});
+ $("welcomeClose").addEventListener("click",()=>{localStorage.setItem("cm_welcome_closed",String(Date.now()));hideModal("welcomeModal");window.scrollTo({top:0,behavior:"smooth"})});
  $("welcomeGps").addEventListener("click",()=>{hideModal("welcomeModal");findLocalityByGPS()});
 }
 async function init(){
@@ -302,7 +305,7 @@ async function init(){
   $("gpsStatus").textContent="No se pudieron cargar los datos. Revisá que las hojas estén compartidas como “Cualquier persona con el enlace: lector”.";
   $("gpsStatus").textContent+=" Detalle: "+e.message;
  }
- showLocalities();updateBanners();initWelcome();
+ updateBanners();initWelcome();
 }
 init();
 </script>
