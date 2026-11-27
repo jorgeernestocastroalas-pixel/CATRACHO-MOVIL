@@ -8,9 +8,9 @@
 <title>Catracho Móvil | Directorio nacional</title>
 <style>
 :root{
- --sky:#bfeaff;--blue:#0878bd;--blue2:#07558b;--navy:#073653;
- --yellow:#ffd447;--white:#fff;--ink:#123247;--muted:#315b73;
- --line:#79c7ed;--green:#159447;--shadow:0 4px 14px #06466a16;
+  --sky:#bfeaff;--blue:#0878bd;--blue2:#07558b;--navy:#073653;
+  --yellow:#ffd447;--white:#fff;--ink:#123247;--muted:#315b73;
+  --line:#79c7ed;--green:#159447;--shadow:0 4px 14px #06466a16;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth;scroll-padding-top:58px}
@@ -36,7 +36,22 @@ h2{font-size:clamp(19px,4vw,25px);color:var(--navy)}
 .locality-grid,.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .locality-btn{background:var(--blue);color:#fff;min-height:58px;border:2px solid #fff}
 .locality-btn small{display:block;color:#e8f8ff;font-weight:600}
-.category-btn{background:var(--blue);color:#fff;border:2px solid #fff;min-height:58px}
+.category-btn{
+  background:var(--blue);
+  color:#fff;
+  border:2px solid #fff;
+  min-height:58px;
+  height:auto;
+  min-width:0;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:normal;
+  line-height:1.2;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 .category-btn.active{background:var(--blue2);color:#fff;border-color:var(--blue2)}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .row>*{flex:1}
@@ -58,255 +73,549 @@ footer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
 footer a{display:flex;justify-content:center;align-items:center;text-align:center;min-height:50px;border-radius:12px;text-decoration:none;font-weight:800;padding:10px}
 .footer-ad{background:var(--blue);color:#fff}.footer-help{background:var(--yellow);color:#24445a}
 .modal{position:fixed;inset:0;background:#06283bd9;z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
-.modal.open{display:flex}.modal-card{background:#fff;border-radius:18px;padding:18px;width:min(100%,520px);max-height:90vh;overflow:auto}
+.modal.open{display:flex}
+.modal-card{background:#fff;border-radius:18px;padding:18px;width:min(100%,520px);max-height:90vh;overflow:auto}
 .close{float:right;border:0;background:#eaf7fd;color:var(--blue2);border-radius:9px;padding:8px 12px;font-weight:900}
 input[type=search]{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;margin:8px 0}
 .notice{background:#fff9df;border:1px solid #f0d778;padding:12px;border-radius:12px}
-@media(min-width:650px){.locality-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.business-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Anuncio dentro de la ficha comercial */
+.detail-ad{
+  width:100%;
+  min-height:50px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  margin:16px auto;
+}
+.detail-ad iframe{
+  display:block;
+  width:320px;
+  height:50px;
+  max-width:100%;
+  border:0;
+}
+
+@media(min-width:650px){
+  .locality-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .business-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 </style>
 </head>
 <body>
+
 <div class="banner-zone banner-top"><div class="banner-inner" id="bannerTop"></div></div>
+
 <main class="app">
-<header><img class="logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqZmTLl0k6roUrM78-brPS-YfOXtnBpySaaE9GIgTjvMTUkcYd9nt5HZRtvn2cJ02iR1Kp4Z2j0SXAdtKY4ahyoj3Tah5_dDyvvqUEPwBg8SY6l0OyBvMf_KZYAThYOpxdxu4d_9azSul75JLJpGWyPtYb-zo_yrp_Xs3mWeM4oTOykVjgYSAGFxyOvnA/s1672/1001591849.png" alt="Catracho Móvil"></header>
+<header>
+  <img class="logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqZmTLl0k6roUrM78-brPS-YfOXtnBpySaaE9GIgTjvMTUkcYd9nt5HZRtvn2cJ02iR1Kp4Z2j0SXAdtKY4ahyoj3Tah5_dDyvvqUEPwBg8SY6l0OyBvMf_KZYAThYOpxdxu4d_9azSul75JLJpGWyPtYb-zo_yrp_Xs3mWeM4oTOykVjgYSAGFxyOvnA/s1672/1001591849.png" alt="Catracho Móvil">
+</header>
+
 <section class="panel" id="home">
-<h1>Encontrá lo que necesitás</h1>
-<p class="sub" id="welcomeText">Elegí una localidad para consultar negocios y teléfonos.</p>
-<div class="row"><button class="primary" id="gpsBtn">📍 Usar mi ubicación</button><button class="secondary" id="manualBtn">Elegir localidad</button></div>
-<div id="gpsStatus" class="status" aria-live="polite"></div>
+  <h1>Encontrá lo que necesitás</h1>
+  <p class="sub" id="welcomeText">Elegí una localidad para consultar negocios y teléfonos.</p>
+  <div class="row">
+    <button class="primary" id="gpsBtn">📍 Usar mi ubicación</button>
+    <button class="secondary" id="manualBtn">Elegir localidad</button>
+  </div>
+  <div id="gpsStatus" class="status" aria-live="polite"></div>
 </section>
+
 <section class="panel hidden" id="localities">
-<h2>Localidades</h2><p class="sub">Seleccioná la zona comercial que querés consultar.</p>
-<div class="locality-grid" id="localityGrid"></div>
+  <h2>Localidades</h2>
+  <p class="sub">Seleccioná la zona comercial que querés consultar.</p>
+  <div class="locality-grid" id="localityGrid"></div>
 </section>
+
 <section class="panel hidden" id="directory">
-<div class="row"><div><h1 id="currentLocality">Localidad</h1><p class="sub">Directorio comercial</p></div><button class="secondary" id="changeLocality">Cambiar localidad</button></div>
-<div class="category-grid" id="categoryGrid"></div>
-<div id="results" class="hidden"><div class="toolbar"><button class="secondary" id="clearCategory">Ver todas las categorías</button></div><h2 id="resultsTitle">Comercios</h2><div class="business-list" id="businessList"></div></div>
+  <div class="row">
+    <div>
+      <h1 id="currentLocality">Localidad</h1>
+      <p class="sub">Directorio comercial</p>
+    </div>
+    <button class="secondary" id="changeLocality">Cambiar localidad</button>
+  </div>
+  <div class="category-grid" id="categoryGrid"></div>
+  <div id="results" class="hidden">
+    <div class="toolbar">
+      <button class="secondary" id="clearCategory">Ver todas las categorías</button>
+    </div>
+    <h2 id="resultsTitle">Comercios</h2>
+    <div class="business-list" id="businessList"></div>
+  </div>
 </section>
-<footer><a class="footer-ad" id="advertiseLink" href="#">Publicidad</a><a class="footer-help" href="https://guia.puntoventa.shop/2026/11/campana-solidaria-local-con-un-clic.html" target="_blank" rel="noopener">Ayuda humanitaria</a></footer>
+
+<footer>
+  <a class="footer-ad" id="advertiseLink" href="#">Publicidad</a>
+  <a class="footer-help" href="https://guia.puntoventa.shop/2026/11/campana-solidaria-local-con-un-clic.html" target="_blank" rel="noopener">Ayuda humanitaria</a>
+</footer>
 </main>
+
 <div class="banner-zone banner-bottom"><div class="banner-inner" id="bannerBottom"></div></div>
-<div class="modal" id="welcomeModal"><div class="modal-card"><button class="close" id="welcomeClose">✕</button><h2>¡Bienvenido a Catracho Móvil!</h2><p>Para encontrar negocios y teléfonos de tu zona automáticamente, activá tu GPS y permití el acceso a tu ubicación.</p><p>Si preferís no activar el GPS, usá el botón <b>Elegir localidad</b> para consultar cualquier zona del país.</p><button class="primary" id="welcomeGps">Activar GPS</button></div></div>
-<div class="modal" id="detailModal"><div class="modal-card"><button class="close" id="detailClose">✕</button><h2 id="detailName"></h2><p id="detailDescription"></p><p id="detailAddress"></p><div class="actions" id="detailActions"></div></div></div>
+
+<div class="modal" id="welcomeModal">
+  <div class="modal-card">
+    <button class="close" id="welcomeClose">✕</button>
+    <h2>¡Bienvenido a Catracho Móvil!</h2>
+    <p>Para encontrar negocios y teléfonos de tu zona automáticamente, activá tu GPS y permití el acceso a tu ubicación.</p>
+    <p>Si preferís no activar el GPS, usá el botón <b>Elegir localidad</b> para consultar cualquier zona del país.</p>
+    <button class="primary" id="welcomeGps">Activar GPS</button>
+  </div>
+</div>
+
+<div class="modal" id="detailModal">
+  <div class="modal-card">
+    <button class="close" id="detailClose">✕</button>
+    <h2 id="detailName"></h2>
+    <p id="detailDescription"></p>
+    <p id="detailAddress"></p>
+
+    <!-- Espacio publicitario dentro de la ficha -->
+    <div class="detail-ad" id="detailAd"></div>
+
+    <div class="actions" id="detailActions"></div>
+  </div>
+</div>
+
 <script>
 const SHEET_ID="1pNxzGifuhHza8Kv3r6eogyqK6TGvw6gmZhAeLexnaSg";
+
 const CFG={
- directorio:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Directorio`,
- banners:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Banners`,
- adminWhatsApp:"50488362713",
- adminMessage:"Hola, quiero anunciar mi negocio en Catracho Móvil.",
- supportUrl:"https://guia.puntoventa.shop/2026/11/campana-solidaria-local-con-un-clic.html",
- rotationMs:6000,
- adsterra320x50Key:"f0790f0b6da44120e1c6c4bc8bcb72bb",
- adsterra728Key:"94a60368d80726e04cbdceea35d7410e",
- adsterraSrcBase:"https://bicea.org/22/"
+  directorio:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Directorio`,
+  banners:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Banners`,
+  adminWhatsApp:"50488362713",
+  adminMessage:"Hola, quiero anunciar mi negocio en Catracho Móvil.",
+  supportUrl:"https://guia.puntoventa.shop/2026/11/campana-solidaria-local-con-un-clic.html",
+  rotationMs:6000,
+  adsterra320x50Key:"f0790f0b6da44120e1c6c4bc8bcb72bb",
+  adsterra728Key:"94a60368d80726e04cbdceea35d7410e",
+  adsterraSrcBase:"https://bicea.org/22/"
 };
+
 const LOCALITIES=[
- ["Comayagua","comayagua"],["El Progreso","el_progreso"],["Intibucá","intibuca"],
- ["La Ceiba","la_ceiba"],["La Entrada","la_entrada"],["Ocotepeque","ocotepeque"],
- ["San Marcos","san_marcos"],["San Pedro Sula","san_pedro_sula"],
- ["Santa Rosa de Copán","santa_rosa_de_copan"],["Siguatepeque","siguatepeque"],
- ["Tegucigalpa","tegucigalpa"],["Yoro","yoro"]
+  ["Comayagua","comayagua"],["El Progreso","el_progreso"],["Intibucá","intibuca"],
+  ["La Ceiba","la_ceiba"],["La Entrada","la_entrada"],["Ocotepeque","ocotepeque"],
+  ["San Marcos","san_marcos"],["San Pedro Sula","san_pedro_sula"],
+  ["Santa Rosa de Copán","santa_rosa_de_copan"],["Siguatepeque","siguatepeque"],
+  ["Tegucigalpa","tegucigalpa"],["Yoro","yoro"]
 ];
+
 const $=id=>document.getElementById(id);
 let businesses=[],campaigns=[],selectedLocality="",selectedCategory="";
 let topTimer=null,bottomTimer=null;
+
 const norm=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
 const yes=v=>["si","sí","yes","true","1","activo"].includes(norm(v));
+
 function csvParse(src){
- const rows=[];let row=[],val="",quoted=false;
- for(let i=0;i<src.length;i++){const c=src[i],n=src[i+1];
-  if(quoted){if(c==='"'&&n==='"'){val+='"';i++}else if(c==='"')quoted=false;else val+=c}
-  else if(c==='"')quoted=true;else if(c===","){row.push(val.trim());val=""}
-  else if(c==="\n"||c==="\r"){if(c==="\r"&&n==="\n")i++;row.push(val.trim());if(row.some(x=>x!==""))rows.push(row);row=[];val=""}
-  else val+=c;
- }
- if(val!==""||row.length){row.push(val.trim());if(row.some(x=>x!==""))rows.push(row)}
- if(rows.length<2)return [];
- const headers=rows.shift().map(x=>norm(x).replace(/\s+/g,"_"));
- return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]||"").trim()])));
+  const rows=[];let row=[],val="",quoted=false;
+  for(let i=0;i<src.length;i++){
+    const c=src[i],n=src[i+1];
+    if(quoted){
+      if(c==='"'&&n==='"'){val+='"';i++}
+      else if(c==='"')quoted=false;
+      else val+=c;
+    }else if(c==='"')quoted=true;
+    else if(c===","){row.push(val.trim());val=""}
+    else if(c==="\n"||c==="\r"){
+      if(c==="\r"&&n==="\n")i++;
+      row.push(val.trim());
+      if(row.some(x=>x!==""))rows.push(row);
+      row=[];val="";
+    }else val+=c;
+  }
+  if(val!==""||row.length){
+    row.push(val.trim());
+    if(row.some(x=>x!==""))rows.push(row);
+  }
+  if(rows.length<2)return [];
+  const headers=rows.shift().map(x=>norm(x).replace(/\s+/g,"_"));
+  return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]||"").trim()])));
 }
+
 async function fetchSheet(url){
- const response=await fetch(url,{cache:"no-store"});
- if(!response.ok)throw Error("No se pudo leer la hoja");
- const body=await response.text();
- if(body.includes("<html")||body.includes("<!DOCTYPE"))throw Error("La hoja no está publicada para lectura");
- return csvParse(body);
+  const response=await fetch(url,{cache:"no-store"});
+  if(!response.ok)throw Error("No se pudo leer la hoja");
+  const body=await response.text();
+  if(body.includes("<html")||body.includes("<!DOCTYPE"))throw Error("La hoja no está publicada para lectura");
+  return csvParse(body);
 }
-function localityField(name){return norm(name).replace(/\s+/g,"_");}
+
+function localityField(name){return norm(name).replace(/\s+/g,"_")}
 function inLocality(row,name){return yes(row[localityField(name)])}
 function active(row){return yes(row.activo)}
+
 function validNow(row){
- if(!active(row))return false;
- const today=new Date();today.setHours(0,0,0,0);
- if(row.fecha_inicio){const start=new Date(row.fecha_inicio+"T00:00:00");if(!isNaN(start)&&start>today)return false}
- if(row.fecha_fin){const end=new Date(row.fecha_fin+"T23:59:59");if(!isNaN(end)&&end<today)return false}
- return true;
+  if(!active(row))return false;
+  const today=new Date();today.setHours(0,0,0,0);
+  if(row.fecha_inicio){
+    const start=new Date(row.fecha_inicio+"T00:00:00");
+    if(!isNaN(start)&&start>today)return false;
+  }
+  if(row.fecha_fin){
+    const end=new Date(row.fecha_fin+"T23:59:59");
+    if(!isNaN(end)&&end<today)return false;
+  }
+  return true;
 }
+
 function waUrl(phone,message=""){
- const digits=String(phone||"").replace(/\D/g,"");
- return "https://wa.me/"+digits+(message?"?text="+encodeURIComponent(message):"");
+  const digits=String(phone||"").replace(/\D/g,"");
+  return "https://wa.me/"+digits+(message?"?text="+encodeURIComponent(message):"");
 }
+
 function showModal(id){$(id).classList.add("open")}
 function hideModal(id){$(id).classList.remove("open")}
+
 function showLocalities(){
- $("localities").classList.remove("hidden");$("directory").classList.add("hidden");
- $("localityGrid").innerHTML="";
- LOCALITIES.filter(([name])=>businesses.some(row=>validNow(row)&&inLocality(row,name))).forEach(([name])=>{
-  const b=document.createElement("button");b.className="locality-btn";b.textContent=name;
-  b.addEventListener("click",()=>selectLocality(name));$("localityGrid").appendChild(b);
- });
- $("localities").scrollIntoView({behavior:"smooth",block:"start"});
+  $("localities").classList.remove("hidden");
+  $("directory").classList.add("hidden");
+  $("localityGrid").innerHTML="";
+  LOCALITIES.filter(([name])=>businesses.some(row=>validNow(row)&&inLocality(row,name))).forEach(([name])=>{
+    const b=document.createElement("button");
+    b.className="locality-btn";
+    b.textContent=name;
+    b.addEventListener("click",()=>selectLocality(name));
+    $("localityGrid").appendChild(b);
+  });
+  $("localities").scrollIntoView({behavior:"smooth",block:"start"});
 }
+
 function selectLocality(name){
- selectedLocality=name;selectedCategory="";
- $("currentLocality").textContent=name;
- $("localities").classList.add("hidden");$("directory").classList.remove("hidden");
- $("results").classList.add("hidden");renderCategories();updateBanners();
- $("directory").scrollIntoView({behavior:"smooth",block:"start"});
+  selectedLocality=name;selectedCategory="";
+  $("currentLocality").textContent=name;
+  $("localities").classList.add("hidden");
+  $("directory").classList.remove("hidden");
+  $("results").classList.add("hidden");
+  renderCategories();
+  updateBanners();
+  $("directory").scrollIntoView({behavior:"smooth",block:"start"});
 }
+
 function renderCategories(){
- const cats=[...new Set(businesses.filter(b=>validNow(b)&&inLocality(b,selectedLocality)).map(b=>b.categoria).filter(Boolean))]
- .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
- $("categoryGrid").innerHTML="";
- if(!cats.length){$("categoryGrid").innerHTML='<div class="empty">Todavía no hay categorías activas para esta localidad.</div>';return}
- cats.forEach(cat=>{
-  const btn=document.createElement("button");btn.className="category-btn"+(selectedCategory===cat?" active":"");btn.textContent=cat;
-  btn.addEventListener("click",()=>{selectedCategory=selectedCategory===cat?"":cat;renderCategories();renderResults();requestAnimationFrame(()=>$("results").scrollIntoView({behavior:"smooth",block:"start"}));});
-  $("categoryGrid").appendChild(btn);
- });
+  const cats=[...new Set(businesses.filter(b=>validNow(b)&&inLocality(b,selectedLocality)).map(b=>b.categoria).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+
+  $("categoryGrid").innerHTML="";
+  if(!cats.length){
+    $("categoryGrid").innerHTML='<div class="empty">Todavía no hay categorías activas para esta localidad.</div>';
+    return;
+  }
+
+  cats.forEach(cat=>{
+    const btn=document.createElement("button");
+    btn.className="category-btn"+(selectedCategory===cat?" active":"");
+    btn.textContent=cat;
+    btn.addEventListener("click",()=>{
+      selectedCategory=selectedCategory===cat?"":cat;
+      renderCategories();
+      renderResults();
+      requestAnimationFrame(()=>$("results").scrollIntoView({behavior:"smooth",block:"start"}));
+    });
+    $("categoryGrid").appendChild(btn);
+  });
 }
+
 function renderResults(){
- const rows=businesses.filter(b=>validNow(b)&&inLocality(b,selectedLocality)&&(!selectedCategory||b.categoria===selectedCategory));
- rows.sort((a,b)=>(yes(b.destacado)?1:0)-(yes(a.destacado)?1:0)||String(a.negocio).localeCompare(String(b.negocio),"es"));
- $("results").classList.remove("hidden");$("resultsTitle").textContent=(selectedCategory||"Todos los negocios")+` (${rows.length})`;
- $("businessList").innerHTML="";
- if(!rows.length){$("businessList").innerHTML='<div class="empty">No hay negocios activos en esta categoría.</div>';return}
- rows.forEach(item=>{
-  const card=document.createElement("article");card.className="biz"+(yes(item.destacado)?" featured":"");
-  if(yes(item.destacado)){const tag=document.createElement("span");tag.className="tag";tag.textContent="DESTACADO";card.appendChild(tag)}
-  const h=document.createElement("h3");h.textContent=item.negocio||"Negocio";card.appendChild(h);
-  if(item.detalle){const p=document.createElement("p");p.textContent=item.detalle;card.appendChild(p)}
-  if(item.direccion){const p=document.createElement("p");p.textContent="📍 "+item.direccion;card.appendChild(p)}
-  const actions=document.createElement("div");actions.className="actions";
-  if(item.tel1){const a=document.createElement("a");a.className="action-btn";a.href="tel:"+item.tel1.replace(/\D/g,"");a.textContent="☎ Llamar";actions.appendChild(a);
-   const w=document.createElement("a");w.className="action-btn wa";w.href=waUrl(item.tel1);w.target="_blank";w.rel="noopener";w.textContent="WhatsApp";actions.appendChild(w)}
-  if(item.tel2){const a=document.createElement("a");a.className="action-btn";a.href="tel:"+item.tel2.replace(/\D/g,"");a.textContent="☎ Teléfono 2";actions.appendChild(a)}
-  const more=document.createElement("button");more.className="action-btn";more.textContent="Ver ficha";more.addEventListener("click",()=>openDetail(item));actions.appendChild(more);
-  card.appendChild(actions);$("businessList").appendChild(card);
- });
+  const rows=businesses.filter(b=>validNow(b)&&inLocality(b,selectedLocality)&&(!selectedCategory||b.categoria===selectedCategory));
+  rows.sort((a,b)=>(yes(b.destacado)?1:0)-(yes(a.destacado)?1:0)||String(a.negocio).localeCompare(String(b.negocio),"es"));
+
+  $("results").classList.remove("hidden");
+  $("resultsTitle").textContent=(selectedCategory||"Todos los negocios")+` (${rows.length})`;
+  $("businessList").innerHTML="";
+
+  if(!rows.length){
+    $("businessList").innerHTML='<div class="empty">No hay negocios activos en esta categoría.</div>';
+    return;
+  }
+
+  rows.forEach(item=>{
+    const card=document.createElement("article");
+    card.className="biz"+(yes(item.destacado)?" featured":"");
+
+    if(yes(item.destacado)){
+      const tag=document.createElement("span");
+      tag.className="tag";
+      tag.textContent="DESTACADO";
+      card.appendChild(tag);
+    }
+
+    const h=document.createElement("h3");
+    h.textContent=item.negocio||"Negocio";
+    card.appendChild(h);
+
+    if(item.detalle){
+      const p=document.createElement("p");
+      p.textContent=item.detalle;
+      card.appendChild(p);
+    }
+
+    if(item.direccion){
+      const p=document.createElement("p");
+      p.textContent="📍 "+item.direccion;
+      card.appendChild(p);
+    }
+
+    const actions=document.createElement("div");
+    actions.className="actions";
+
+    if(item.tel1){
+      const a=document.createElement("a");
+      a.className="action-btn";
+      a.href="tel:"+item.tel1.replace(/\D/g,"");
+      a.textContent="☎ Llamar";
+      actions.appendChild(a);
+
+      const w=document.createElement("a");
+      w.className="action-btn wa";
+      w.href=waUrl(item.tel1);
+      w.target="_blank";
+      w.rel="noopener";
+      w.textContent="WhatsApp";
+      actions.appendChild(w);
+    }
+
+    if(item.tel2){
+      const a=document.createElement("a");
+      a.className="action-btn";
+      a.href="tel:"+item.tel2.replace(/\D/g,"");
+      a.textContent="☎ Teléfono 2";
+      actions.appendChild(a);
+    }
+
+    const more=document.createElement("button");
+    more.className="action-btn";
+    more.textContent="Ver ficha";
+    more.addEventListener("click",()=>openDetail(item));
+    actions.appendChild(more);
+
+    card.appendChild(actions);
+    $("businessList").appendChild(card);
+  });
 }
+
 function openDetail(item){
- $("detailName").textContent=item.negocio||"Ficha comercial";
- $("detailDescription").textContent=item.detalle||"";
- $("detailAddress").textContent=item.direccion?"📍 "+item.direccion:"";
- const wrap=$("detailActions");wrap.innerHTML="";
- [item.tel1,item.tel2].filter(Boolean).forEach((phone,i)=>{
-  const call=document.createElement("a");call.className="action-btn";call.href="tel:"+phone.replace(/\D/g,"");call.textContent=i?"Llamar teléfono 2":"Llamar";wrap.appendChild(call);
-  const wa=document.createElement("a");wa.className="action-btn wa";wa.href=waUrl(phone);wa.target="_blank";wa.rel="noopener";wa.textContent="Chatear";wrap.appendChild(wa);
- });
- showModal("detailModal");
+  $("detailName").textContent=item.negocio||"Ficha comercial";
+  $("detailDescription").textContent=item.detalle||"";
+  $("detailAddress").textContent=item.direccion?"📍 "+item.direccion:"";
+
+  const wrap=$("detailActions");
+  wrap.innerHTML="";
+
+  [item.tel1,item.tel2].filter(Boolean).forEach((phone,i)=>{
+    const call=document.createElement("a");
+    call.className="action-btn";
+    call.href="tel:"+phone.replace(/\D/g,"");
+    call.textContent=i?"Llamar teléfono 2":"Llamar";
+    wrap.appendChild(call);
+
+    const wa=document.createElement("a");
+    wa.className="action-btn wa";
+    wa.href=waUrl(phone);
+    wa.target="_blank";
+    wa.rel="noopener";
+    wa.textContent="Chatear";
+    wrap.appendChild(wa);
+  });
+
+  showModal("detailModal");
+
+  // Cargar el anuncio Adsterra de 320 x 50 dentro de la ficha.
+  mountAdsterra($("detailAd"),false);
 }
+
 function bannerMatches(banner,position){
- return validNow(banner)&&norm(banner.posicion)===norm(position)&&inLocality(banner,selectedLocality);
+  return validNow(banner)&&norm(banner.posicion)===norm(position)&&inLocality(banner,selectedLocality);
 }
-function mountAdsterra(container){
- container.innerHTML="";
- const key=CFG.adsterra320x50Key;
- if(!key)return;
- const frame=document.createElement("iframe");
- frame.width="320";frame.height="50";frame.title="Publicidad Adsterra";frame.scrolling="no";
- frame.style.width="320px";frame.style.height="50px";frame.style.border="0";frame.style.transform="scale(.80)";frame.style.transformOrigin="center center";
- const base=CFG.adsterraSrcBase;
- frame.srcdoc=`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;width:320px;height:50px;overflow:hidden"><script>atOptions={'key':'${key}','format':'iframe','height':50,'width':320,'params':{}};<\/script><script src="${base}${key}"><\/script></body></html>`;
- container.appendChild(frame);
+
+function mountAdsterra(container,scaled=true){
+  container.innerHTML="";
+  const key=CFG.adsterra320x50Key;
+  if(!key)return;
+
+  const frame=document.createElement("iframe");
+  frame.width="320";
+  frame.height="50";
+  frame.title="Publicidad Adsterra";
+  frame.scrolling="no";
+  frame.style.width="320px";
+  frame.style.height="50px";
+  frame.style.border="0";
+
+  if(scaled){
+    frame.style.transform="scale(.80)";
+    frame.style.transformOrigin="center center";
+  }else{
+    frame.style.transform="none";
+  }
+
+  const base=CFG.adsterraSrcBase;
+  frame.srcdoc=`<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;width:320px;height:50px;overflow:hidden"><script>atOptions={'key':'${key}','format':'iframe','height':50,'width':320,'params':{}};<\/script><script src="${base}${key}"><\/script></body></html>`;
+
+  container.appendChild(frame);
 }
+
 function bannerElement(container,banner){
- container.innerHTML="";
- if(!banner)return;
- const imageUrl=banner.url_imagen||banner.imagen_url||"";
- if(!imageUrl)return;
- const img=document.createElement("img");img.src=imageUrl;img.alt=banner.nombre_banner||banner.anunciante||"Publicidad";
- const target=String(banner.destino||"").trim();
- if(target){const a=document.createElement("a");a.href=norm(banner.tipo_destino)==="whatsapp"?waUrl(target,banner.mensaje):target;a.target="_blank";a.rel="noopener";a.appendChild(img);container.appendChild(a)}
- else container.appendChild(img);
+  container.innerHTML="";
+  if(!banner)return;
+
+  const imageUrl=banner.url_imagen||banner.imagen_url||"";
+  if(!imageUrl)return;
+
+  const img=document.createElement("img");
+  img.src=imageUrl;
+  img.alt=banner.nombre_banner||banner.anunciante||"Publicidad";
+
+  const target=String(banner.destino||"").trim();
+
+  if(target){
+    const a=document.createElement("a");
+    a.href=norm(banner.tipo_destino)==="whatsapp"?waUrl(target,banner.mensaje):target;
+    a.target="_blank";
+    a.rel="noopener";
+    a.appendChild(img);
+    container.appendChild(a);
+  }else{
+    container.appendChild(img);
+  }
 }
+
 function startBannerRotation(containerId,position){
- const container=$(containerId);let index=0,timer=null;
- const clients=campaigns.filter(b=>bannerMatches(b,position));
- const showAd=()=>mountAdsterra(container);
- if(!clients.length){showAd();return null;}
- const items=[...clients,{__adsterra:true}];
- const rotate=()=>{
-  const item=items[index%items.length];index++;
-  if(item.__adsterra)showAd();else bannerElement(container,item);
- };
- rotate();
- if(items.length>1)timer=setInterval(rotate,CFG.rotationMs);
- return timer;
+  const container=$(containerId);
+  let index=0,timer=null;
+  const clients=campaigns.filter(b=>bannerMatches(b,position));
+  const showAd=()=>mountAdsterra(container);
+
+  if(!clients.length){
+    showAd();
+    return null;
+  }
+
+  const items=[...clients,{__adsterra:true}];
+
+  const rotate=()=>{
+    const item=items[index%items.length];
+    index++;
+    if(item.__adsterra)showAd();
+    else bannerElement(container,item);
+  };
+
+  rotate();
+  if(items.length>1)timer=setInterval(rotate,CFG.rotationMs);
+  return timer;
 }
+
 function updateBanners(){
- clearInterval(topTimer);clearInterval(bottomTimer);
- topTimer=startBannerRotation("bannerTop","SUPERIOR");
- bottomTimer=startBannerRotation("bannerBottom","INFERIOR");
+  clearInterval(topTimer);
+  clearInterval(bottomTimer);
+  topTimer=startBannerRotation("bannerTop","SUPERIOR");
+  bottomTimer=startBannerRotation("bannerBottom","INFERIOR");
 }
+
 async function findLocalityByGPS(){
- $("gpsStatus").textContent="Solicitando ubicación…";
- if(!navigator.geolocation){$("gpsStatus").textContent="Tu navegador no ofrece geolocalización. Elegí una localidad manualmente.";return}
- navigator.geolocation.getCurrentPosition(async pos=>{
-  const {latitude,longitude}=pos.coords;
-  $("gpsStatus").textContent="Ubicación recibida. Identificando localidad…";
-  try{
-   const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=10&accept-language=es`;
-   const res=await fetch(url);const data=await res.json();
-   const addr=data.address||{};const place=norm([addr.city,addr.town,addr.village,addr.municipality,addr.county,addr.state].filter(Boolean).join(" "));
-   const rules=[
-    ["San Pedro Sula",["san pedro sula","choloma","la lima","villanueva"]],
-    ["Tegucigalpa",["tegucigalpa","comayaguela","comayagüela"]],
-    ["Ocotepeque",["ocotepeque","santa fe","antigua ocotepeque"]],
-    ["Intibucá",["intibuca","la esperanza"]],
-    ["Santa Rosa de Copán",["santa rosa de copan"]],
-    ["Comayagua",["comayagua"]],
-    ["Siguatepeque",["siguatepeque"]],
-    ["La Ceiba",["la ceiba"]],
-    ["El Progreso",["el progreso"]],
-    ["La Entrada",["la entrada","nueva arcadia"]],
-    ["San Marcos",["san marcos"]],
-    ["Yoro",["yoro"]]
-   ];
-   const match=rules.find(([n,terms])=>terms.some(t=>place.includes(norm(t))));
-   if(match){$("gpsStatus").textContent="Localidad identificada: "+match[0];selectLocality(match[0])}
-   else $("gpsStatus").textContent="No pudimos asociar tu ubicación a una de las 12 zonas. Elegí la localidad manualmente.";
-  }catch(e){$("gpsStatus").textContent="No se pudo identificar la localidad automáticamente. Elegila manualmente."}
- },err=>{
-  $("gpsStatus").textContent=err.code===1?"No diste permiso de ubicación. Podés elegir una localidad manualmente.":"No se pudo obtener tu ubicación. Elegí una localidad manualmente.";
- },{enableHighAccuracy:false,timeout:12000,maximumAge:300000});
+  $("gpsStatus").textContent="Solicitando ubicación…";
+
+  if(!navigator.geolocation){
+    $("gpsStatus").textContent="Tu navegador no ofrece geolocalización. Elegí una localidad manualmente.";
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const {latitude,longitude}=pos.coords;
+    $("gpsStatus").textContent="Ubicación recibida. Identificando localidad…";
+
+    try{
+      const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=10&accept-language=es`;
+      const res=await fetch(url);
+      const data=await res.json();
+      const addr=data.address||{};
+      const place=norm([addr.city,addr.town,addr.village,addr.municipality,addr.county,addr.state].filter(Boolean).join(" "));
+
+      const rules=[
+        ["San Pedro Sula",["san pedro sula","choloma","la lima","villanueva"]],
+        ["Tegucigalpa",["tegucigalpa","comayaguela","comayagüela"]],
+        ["Ocotepeque",["ocotepeque","santa fe","antigua ocotepeque"]],
+        ["Intibucá",["intibuca","la esperanza"]],
+        ["Santa Rosa de Copán",["santa rosa de copan"]],
+        ["Comayagua",["comayagua"]],
+        ["Siguatepeque",["siguatepeque"]],
+        ["La Ceiba",["la ceiba"]],
+        ["El Progreso",["el progreso"]],
+        ["La Entrada",["la entrada","nueva arcadia"]],
+        ["San Marcos",["san marcos"]],
+        ["Yoro",["yoro"]]
+      ];
+
+      const match=rules.find(([n,terms])=>terms.some(t=>place.includes(norm(t))));
+
+      if(match){
+        $("gpsStatus").textContent="Localidad identificada: "+match[0];
+        selectLocality(match[0]);
+      }else{
+        $("gpsStatus").textContent="No pudimos asociar tu ubicación a una de las 12 zonas. Elegí la localidad manualmente.";
+      }
+    }catch(e){
+      $("gpsStatus").textContent="No se pudo identificar la localidad automáticamente. Elegila manualmente.";
+    }
+  },err=>{
+    $("gpsStatus").textContent=err.code===1?"No diste permiso de ubicación. Podés elegir una localidad manualmente.":"No se pudo obtener tu ubicación. Elegí una localidad manualmente.";
+  },{enableHighAccuracy:false,timeout:12000,maximumAge:300000});
 }
+
 function initWelcome(){
- window.scrollTo({top:0,behavior:"instant"});
- const last=Number(localStorage.getItem("cm_welcome_closed")||0);
- if(Date.now()-last>24*60*60*1000)showModal("welcomeModal");
- $("welcomeClose").addEventListener("click",()=>{localStorage.setItem("cm_welcome_closed",String(Date.now()));hideModal("welcomeModal");window.scrollTo({top:0,behavior:"smooth"})});
- $("welcomeGps").addEventListener("click",()=>{hideModal("welcomeModal");findLocalityByGPS()});
+  window.scrollTo({top:0,behavior:"instant"});
+  const last=Number(localStorage.getItem("cm_welcome_closed")||0);
+
+  if(Date.now()-last>24*60*60*1000)showModal("welcomeModal");
+
+  $("welcomeClose").addEventListener("click",()=>{
+    localStorage.setItem("cm_welcome_closed",String(Date.now()));
+    hideModal("welcomeModal");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+
+  $("welcomeGps").addEventListener("click",()=>{
+    hideModal("welcomeModal");
+    findLocalityByGPS();
+  });
 }
+
 async function init(){
- $("manualBtn").addEventListener("click",showLocalities);
- $("gpsBtn").addEventListener("click",findLocalityByGPS);
- $("changeLocality").addEventListener("click",showLocalities);
- $("clearCategory").addEventListener("click",()=>{selectedCategory="";renderCategories();$("results").classList.add("hidden")});
- $("detailClose").addEventListener("click",()=>hideModal("detailModal"));
- $("detailModal").addEventListener("click",e=>{if(e.target.id==="detailModal")hideModal("detailModal")});
- $("advertiseLink").href=waUrl(CFG.adminWhatsApp,CFG.adminMessage);
- try{
-  [businesses,campaigns]=await Promise.all([fetchSheet(CFG.directorio),fetchSheet(CFG.banners)]);
-  $("gpsStatus").textContent="";
- }catch(e){
-  $("gpsStatus").textContent="No se pudieron cargar los datos. Revisá que las hojas estén compartidas como “Cualquier persona con el enlace: lector”.";
-  $("gpsStatus").textContent+=" Detalle: "+e.message;
- }
- updateBanners();initWelcome();
+  $("manualBtn").addEventListener("click",showLocalities);
+  $("gpsBtn").addEventListener("click",findLocalityByGPS);
+  $("changeLocality").addEventListener("click",showLocalities);
+
+  $("clearCategory").addEventListener("click",()=>{
+    selectedCategory="";
+    renderCategories();
+    $("results").classList.add("hidden");
+  });
+
+  $("detailClose").addEventListener("click",()=>hideModal("detailModal"));
+
+  $("detailModal").addEventListener("click",e=>{
+    if(e.target.id==="detailModal")hideModal("detailModal");
+  });
+
+  $("advertiseLink").href=waUrl(CFG.adminWhatsApp,CFG.adminMessage);
+
+  try{
+    [businesses,campaigns]=await Promise.all([
+      fetchSheet(CFG.directorio),
+      fetchSheet(CFG.banners)
+    ]);
+    $("gpsStatus").textContent="";
+  }catch(e){
+    $("gpsStatus").textContent="No se pudieron cargar los datos. Revisá que las hojas estén compartidas como “Cualquier persona con el enlace: lector”.";
+    $("gpsStatus").textContent+=" Detalle: "+e.message;
+  }
+
+  updateBanners();
+  initWelcome();
 }
+
 init();
 </script>
 </body>
