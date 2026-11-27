@@ -1,1 +1,300 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0878bd">
+<title>Catracho Móvil | Directorio nacional</title>
+<style>
+:root{
+ --sky:#dff4ff;--blue:#0878bd;--blue2:#07558b;--navy:#073653;
+ --yellow:#ffd447;--white:#fff;--ink:#123247;--muted:#587080;
+ --line:#c7e3f1;--green:#159447;--shadow:0 5px 18px #06466a18;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.4}
+button,input{font:inherit}
+.app{width:min(100%,980px);margin:auto;padding:12px 12px 30px}
+header{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:8px;margin-bottom:12px;box-shadow:var(--shadow)}
+.logo{display:block;width:100%;max-height:150px;object-fit:contain}
+.banner-zone{position:fixed;left:0;right:0;z-index:30;display:flex;justify-content:center;align-items:center;background:#fff;padding:5px;box-shadow:0 2px 12px #07365320;min-height:58px}
+.banner-top{top:0}.banner-bottom{bottom:0}
+.banner-inner{width:min(100%,980px);min-height:48px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.banner-inner img{display:block;width:100%;max-height:90px;object-fit:contain;cursor:pointer}
+.banner-inner iframe{border:0;max-width:100%}
+body{padding-top:68px;padding-bottom:68px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(22px,5vw,32px);color:var(--navy);margin-bottom:6px}
+h2{font-size:clamp(19px,4vw,25px);color:var(--navy)}
+.sub{color:var(--muted);margin-bottom:12px}
+.primary,.secondary,.locality-btn,.category-btn,.action-btn{border:0;border-radius:12px;padding:13px 15px;font-weight:800;cursor:pointer}
+.primary{background:var(--blue);color:#fff}.primary:active,.secondary:active,.locality-btn:active{transform:scale(.99)}
+.secondary{background:#eaf7fd;color:var(--blue2);border:1px solid var(--line)}
+.locality-grid,.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.locality-btn{background:var(--blue);color:#fff;min-height:58px;border:2px solid #5bb5e4}
+.locality-btn small{display:block;color:#e8f8ff;font-weight:600}
+.category-btn{background:var(--yellow);color:#24445a;border:1px solid #e6bd27;min-height:58px}
+.category-btn.active{background:var(--blue2);color:#fff;border-color:var(--blue2)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1}
+.hidden{display:none!important}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.business-list{display:grid;gap:12px}
+.biz{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px;box-shadow:var(--shadow)}
+.biz.featured{border:2px solid #e6bd27}
+.biz h3{margin:0 0 6px;color:var(--navy);font-size:19px}
+.biz p{margin:5px 0;color:#39586a}
+.tag{display:inline-block;background:#fff2b9;color:#6b5100;border-radius:20px;padding:3px 9px;font-size:12px;font-weight:800;margin-bottom:6px}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.action-btn{text-align:center;text-decoration:none;display:block;background:var(--blue);color:white}
+.action-btn.wa{background:var(--green)}
+.empty,.status{padding:14px;color:var(--muted);text-align:center}
+footer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+footer a{display:flex;justify-content:center;align-items:center;text-align:center;min-height:50px;border-radius:12px;text-decoration:none;font-weight:800;padding:10px}
+.footer-ad{background:var(--blue);color:#fff}.footer-help{background:var(--yellow);color:#24445a}
+.modal{position:fixed;inset:0;background:#06283bd9;z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
+.modal.open{display:flex}.modal-card{background:#fff;border-radius:18px;padding:18px;width:min(100%,520px);max-height:90vh;overflow:auto}
+.close{float:right;border:0;background:#eaf7fd;color:var(--blue2);border-radius:9px;padding:8px 12px;font-weight:900}
+input[type=search]{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;margin:8px 0}
+.notice{background:#fff9df;border:1px solid #f0d778;padding:12px;border-radius:12px}
+@media(min-width:650px){.locality-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.business-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="banner-zone banner-top"><div class="banner-inner" id="bannerTop"></div></div>
+<main class="app">
+<header><img class="logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhbn8F1biS4euU5m9cBko6krNbAtFRSZd6dumcxOsLAtJoOumb2BimVVg4sjsjhVw9hv6n505KywTjagImjq6hwUIfrXXBEGssPibUaznwyQOj9BE5fY417y0SEfXCXy_WCdKs3fMG9h0gvfOuCk2Slg_Uy6kasIgmUWW25rYg2J0oiHx2cfgkWBnw9iU4/s1376/1001583591.jpg" alt="Catracho Móvil"></header>
+<section class="panel" id="home">
+<h1>Encontrá lo que necesitás</h1>
+<p class="sub" id="welcomeText">Elegí una localidad para consultar negocios y teléfonos.</p>
+<div class="row"><button class="primary" id="gpsBtn">📍 Usar mi ubicación</button><button class="secondary" id="manualBtn">Elegir localidad</button></div>
+<div id="gpsStatus" class="status" aria-live="polite"></div>
+</section>
+<section class="panel hidden" id="localities">
+<h2>Localidades</h2><p class="sub">Seleccioná la zona comercial que querés consultar.</p>
+<div class="locality-grid" id="localityGrid"></div>
+</section>
+<section class="panel hidden" id="directory">
+<div class="row"><div><h1 id="currentLocality">Localidad</h1><p class="sub">Directorio comercial</p></div><button class="secondary" id="changeLocality">Cambiar localidad</button></div>
+<div class="category-grid" id="categoryGrid"></div>
+<div id="results" class="hidden"><div class="toolbar"><button class="secondary" id="clearCategory">Ver todas las categorías</button></div><h2 id="resultsTitle">Comercios</h2><div class="business-list" id="businessList"></div></div>
+</section>
+<footer><a class="footer-ad" id="advertiseLink" href="#">Publicidad</a><a class="footer-help" href="https://guia.puntoventa.shop/2026/11/campana-solidaria-local-con-un-clic.html" target="_blank" rel="noopener">Ayuda humanitaria</a></footer>
+</main>
+<div class="banner-zone banner-bottom"><div class="banner-inner" id="bannerBottom"></div></div>
+<div class="modal" id="welcomeModal"><div class="modal-card"><button class="close" id="welcomeClose">✕</button><h2>¡Bienvenido a Catracho Móvil!</h2><p>Para encontrar negocios y teléfonos de tu zona automáticamente, activá tu GPS y permití el acceso a tu ubicación.</p><p>Si preferís no activar el GPS, usá el botón <b>Elegir localidad</b> para consultar cualquier zona del país.</p><button class="primary" id="welcomeGps">Activar GPS</button></div></div>
+<div class="modal" id="detailModal"><div class="modal-card"><button class="close" id="detailClose">✕</button><h2 id="detailName"></h2><p id="detailDescription"></p><p id="detailAddress"></p><div class="actions" id="detailActions"></div></div></div>
+<script>
+const SHEET_ID="1pNxzGifuhHza8Kv3r6eogyqK6TGvw6gmZhAeLexnaSg";
+const CFG={
+ directorio:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Directorio`,
+ banners:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Banners`,
+ adminWhatsApp:"50488362713",
+ adminMessage:"Hola, quiero anunciar mi negocio en Catracho Móvil.",
+ supportUrl:"https://guia.puntoventa.shop/2026/11/campana-solidaria-local-con-un-clic.html",
+ rotationMs:6000,
+ adsterra728Key:"94a60368d80726e04cbdceea35d7410e",
+ adsterraSrcBase:"https://bicea.org/22/"
+};
+const LOCALITIES=[
+ ["Comayagua","comayagua"],["El Progreso","el_progreso"],["Intibucá","intibuca"],
+ ["La Ceiba","la_ceiba"],["La Entrada","la_entrada"],["Ocotepeque","ocotepeque"],
+ ["San Marcos","san_marcos"],["San Pedro Sula","san_pedro_sula"],
+ ["Santa Rosa de Copán","santa_rosa_de_copan"],["Siguatepeque","siguatepeque"],
+ ["Tegucigalpa","tegucigalpa"],["Yoro","yoro"]
+];
+const $=id=>document.getElementById(id);
+let businesses=[],campaigns=[],selectedLocality="",selectedCategory="";
+let topTimer=null,bottomTimer=null;
+const norm=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
+const yes=v=>["si","sí","yes","true","1","activo"].includes(norm(v));
+function csvParse(src){
+ const rows=[];let row=[],val="",quoted=false;
+ for(let i=0;i<src.length;i++){const c=src[i],n=src[i+1];
+  if(quoted){if(c==='"'&&n==='"'){val+='"';i++}else if(c==='"')quoted=false;else val+=c}
+  else if(c==='"')quoted=true;else if(c===","){row.push(val.trim());val=""}
+  else if(c==="\n"||c==="\r"){if(c==="\r"&&n==="\n")i++;row.push(val.trim());if(row.some(x=>x!==""))rows.push(row);row=[];val=""}
+  else val+=c;
+ }
+ if(val!==""||row.length){row.push(val.trim());if(row.some(x=>x!==""))rows.push(row)}
+ if(rows.length<2)return [];
+ const headers=rows.shift().map(x=>norm(x).replace(/\s+/g,"_"));
+ return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]||"").trim()])));
+}
+async function fetchSheet(url){
+ const response=await fetch(url,{cache:"no-store"});
+ if(!response.ok)throw Error("No se pudo leer la hoja");
+ const body=await response.text();
+ if(body.includes("<html")||body.includes("<!DOCTYPE"))throw Error("La hoja no está publicada para lectura");
+ return csvParse(body);
+}
+function localityField(name){return norm(name).replace(/\s+/g,"_");}
+function inLocality(row,name){return yes(row[localityField(name)])}
+function active(row){return yes(row.activo)}
+function validNow(row){
+ if(!active(row))return false;
+ const end=row.fecha_fin;
+ if(!end)return true;
+ const d=new Date(end);if(Number.isNaN(d.getTime()))return true;
+ d.setHours(23,59,59,999);return d>=new Date();
+}
+function waUrl(phone,message){
+ const digits=String(phone||"").replace(/\D/g,"");
+ return digits?`https://wa.me/${digits}?text=${encodeURIComponent(message||"Vengo de Catracho Móvil y necesito sus servicios.")}`:"#";
+}
+function showModal(id){$(id).classList.add("open")}
+function hideModal(id){$(id).classList.remove("open")}
+function showLocalities(){
+ $("localities").classList.remove("hidden");$("directory").classList.add("hidden");
+ $("localityGrid").innerHTML="";
+ LOCALITIES.forEach(([name])=>{
+  const b=document.createElement("button");b.className="locality-btn";b.textContent=name;
+  b.addEventListener("click",()=>selectLocality(name));$("localityGrid").appendChild(b);
+ });
+ $("localities").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function selectLocality(name){
+ selectedLocality=name;selectedCategory="";
+ $("currentLocality").textContent=name;
+ $("localities").classList.add("hidden");$("directory").classList.remove("hidden");
+ $("results").classList.add("hidden");renderCategories();
+ $("directory").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function renderCategories(){
+ const cats=[...new Set(businesses.filter(b=>validNow(b)&&inLocality(b,selectedLocality)).map(b=>b.categoria).filter(Boolean))]
+ .sort((a,b)=>a.localeCompare(b,"es",{sensitivity:"base"}));
+ $("categoryGrid").innerHTML="";
+ if(!cats.length){$("categoryGrid").innerHTML='<div class="empty">Todavía no hay categorías activas para esta localidad.</div>';return}
+ cats.forEach(cat=>{
+  const btn=document.createElement("button");btn.className="category-btn"+(selectedCategory===cat?" active":"");btn.textContent=cat;
+  btn.addEventListener("click",()=>{selectedCategory=selectedCategory===cat?"":cat;renderCategories();renderResults()});
+  $("categoryGrid").appendChild(btn);
+ });
+}
+function renderResults(){
+ const rows=businesses.filter(b=>validNow(b)&&inLocality(b,selectedLocality)&&(!selectedCategory||b.categoria===selectedCategory));
+ rows.sort((a,b)=>(yes(b.destacado)?1:0)-(yes(a.destacado)?1:0)||String(a.negocio).localeCompare(String(b.negocio),"es"));
+ $("results").classList.remove("hidden");$("resultsTitle").textContent=(selectedCategory||"Todos los negocios")+` (${rows.length})`;
+ $("businessList").innerHTML="";
+ if(!rows.length){$("businessList").innerHTML='<div class="empty">No hay negocios activos en esta categoría.</div>';return}
+ rows.forEach(item=>{
+  const card=document.createElement("article");card.className="biz"+(yes(item.destacado)?" featured":"");
+  if(yes(item.destacado)){const tag=document.createElement("span");tag.className="tag";tag.textContent="DESTACADO";card.appendChild(tag)}
+  const h=document.createElement("h3");h.textContent=item.negocio||"Negocio";card.appendChild(h);
+  if(item.detalle){const p=document.createElement("p");p.textContent=item.detalle;card.appendChild(p)}
+  if(item.direccion){const p=document.createElement("p");p.textContent="📍 "+item.direccion;card.appendChild(p)}
+  const actions=document.createElement("div");actions.className="actions";
+  if(item.tel1){const a=document.createElement("a");a.className="action-btn";a.href="tel:"+item.tel1.replace(/\D/g,"");a.textContent="☎ Llamar";actions.appendChild(a);
+   const w=document.createElement("a");w.className="action-btn wa";w.href=waUrl(item.tel1);w.target="_blank";w.rel="noopener";w.textContent="WhatsApp";actions.appendChild(w)}
+  if(item.tel2){const a=document.createElement("a");a.className="action-btn";a.href="tel:"+item.tel2.replace(/\D/g,"");a.textContent="☎ Teléfono 2";actions.appendChild(a)}
+  const more=document.createElement("button");more.className="action-btn";more.textContent="Ver ficha";more.addEventListener("click",()=>openDetail(item));actions.appendChild(more);
+  card.appendChild(actions);$("businessList").appendChild(card);
+ });
+}
+function openDetail(item){
+ $("detailName").textContent=item.negocio||"Ficha comercial";
+ $("detailDescription").textContent=item.detalle||"";
+ $("detailAddress").textContent=item.direccion?"📍 "+item.direccion:"";
+ const wrap=$("detailActions");wrap.innerHTML="";
+ [item.tel1,item.tel2].filter(Boolean).forEach((phone,i)=>{
+  const call=document.createElement("a");call.className="action-btn";call.href="tel:"+phone.replace(/\D/g,"");call.textContent=i?"Llamar teléfono 2":"Llamar";wrap.appendChild(call);
+  const wa=document.createElement("a");wa.className="action-btn wa";wa.href=waUrl(phone);wa.target="_blank";wa.rel="noopener";wa.textContent="Chatear";wrap.appendChild(wa);
+ });
+ showModal("detailModal");
+}
+function bannerMatches(banner,position){
+ return validNow(banner)&&norm(banner.posicion)===norm(position)&&inLocality(banner,selectedLocality);
+}
+function bannerElement(container,banner){
+ container.innerHTML="";
+ if(!banner){mountAdFallback(container);return}
+ const img=document.createElement("img");img.src=banner.url_imagen||banner.imagen_url||"";img.alt=banner.nombre_banner||banner.anunciante||"Publicidad";
+ img.onerror=()=>{container.innerHTML='<span class="status">Espacio publicitario</span>'};
+ const target=String(banner.destino||"").trim();
+ if(target){const a=document.createElement("a");a.href=norm(banner.tipo_destino)==="whatsapp"?waUrl(target,banner.mensaje):target;a.target="_blank";a.rel="noopener";a.appendChild(img);container.appendChild(a)}
+ else container.appendChild(img);
+}
+function mountAdFallback(container){
+ container.innerHTML="";
+ if(!CFG.adsterra728Key){container.innerHTML='<span class="status">Anuncie aquí · Catracho Móvil</span>';return}
+ const frame=document.createElement("iframe");frame.width="728";frame.height="90";frame.title="Publicidad";frame.scrolling="no";
+ const key=CFG.adsterra728Key,base=CFG.adsterraSrcBase;
+ frame.srcdoc=`<!doctype html><html><body style="margin:0"><script>atOptions={'key':'${key}','format':'iframe','height':90,'width':728,'params':{}};<\/script><script src="${base}${key}"><\/script></body></html>`;
+ container.appendChild(frame);
+}
+function startBannerRotation(containerId,position){
+ const container=$(containerId);let index=0;
+ const rotate=()=>{
+  const list=campaigns.filter(b=>bannerMatches(b,position));
+  if(!list.length){mountAdFallback(container);return}
+  bannerElement(container,list[index%list.length]);index++;
+ };
+ rotate();return setInterval(rotate,CFG.rotationMs);
+}
+function updateBanners(){
+ clearInterval(topTimer);clearInterval(bottomTimer);
+ topTimer=startBannerRotation("bannerTop","SUPERIOR");
+ bottomTimer=startBannerRotation("bannerBottom","INFERIOR");
+}
+async function findLocalityByGPS(){
+ $("gpsStatus").textContent="Solicitando ubicación…";
+ if(!navigator.geolocation){$("gpsStatus").textContent="Tu navegador no ofrece geolocalización. Elegí una localidad manualmente.";return}
+ navigator.geolocation.getCurrentPosition(async pos=>{
+  const {latitude,longitude}=pos.coords;
+  $("gpsStatus").textContent="Ubicación recibida. Identificando localidad…";
+  try{
+   const url=`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=10&accept-language=es`;
+   const res=await fetch(url);const data=await res.json();
+   const addr=data.address||{};const place=norm([addr.city,addr.town,addr.village,addr.municipality,addr.county,addr.state].filter(Boolean).join(" "));
+   const rules=[
+    ["San Pedro Sula",["san pedro sula","choloma","la lima","villanueva"]],
+    ["Tegucigalpa",["tegucigalpa","comayaguela","comayagüela"]],
+    ["Ocotepeque",["ocotepeque","santa fe","antigua ocotepeque"]],
+    ["Intibucá",["intibuca","la esperanza"]],
+    ["Santa Rosa de Copán",["santa rosa de copan"]],
+    ["Comayagua",["comayagua"]],
+    ["Siguatepeque",["siguatepeque"]],
+    ["La Ceiba",["la ceiba"]],
+    ["El Progreso",["el progreso"]],
+    ["La Entrada",["la entrada","nueva arcadia"]],
+    ["San Marcos",["san marcos"]],
+    ["Yoro",["yoro"]]
+   ];
+   const match=rules.find(([n,terms])=>terms.some(t=>place.includes(norm(t))));
+   if(match){$("gpsStatus").textContent="Localidad identificada: "+match[0];selectLocality(match[0])}
+   else $("gpsStatus").textContent="No pudimos asociar tu ubicación a una de las 12 zonas. Elegí la localidad manualmente.";
+  }catch(e){$("gpsStatus").textContent="No se pudo identificar la localidad automáticamente. Elegila manualmente."}
+ },err=>{
+  $("gpsStatus").textContent=err.code===1?"No diste permiso de ubicación. Podés elegir una localidad manualmente.":"No se pudo obtener tu ubicación. Elegí una localidad manualmente.";
+ },{enableHighAccuracy:false,timeout:12000,maximumAge:300000});
+}
+function initWelcome(){
+ const last=Number(localStorage.getItem("cm_welcome_closed")||0);
+ if(Date.now()-last>24*60*60*1000)showModal("welcomeModal");
+ $("welcomeClose").addEventListener("click",()=>{localStorage.setItem("cm_welcome_closed",String(Date.now()));hideModal("welcomeModal")});
+ $("welcomeGps").addEventListener("click",()=>{hideModal("welcomeModal");findLocalityByGPS()});
+}
+async function init(){
+ $("manualBtn").addEventListener("click",showLocalities);
+ $("gpsBtn").addEventListener("click",findLocalityByGPS);
+ $("changeLocality").addEventListener("click",showLocalities);
+ $("clearCategory").addEventListener("click",()=>{selectedCategory="";renderCategories();$("results").classList.add("hidden")});
+ $("detailClose").addEventListener("click",()=>hideModal("detailModal"));
+ $("detailModal").addEventListener("click",e=>{if(e.target.id==="detailModal")hideModal("detailModal")});
+ $("advertiseLink").href=waUrl(CFG.adminWhatsApp,CFG.adminMessage);
+ try{
+  [businesses,campaigns]=await Promise.all([fetchSheet(CFG.directorio),fetchSheet(CFG.banners)]);
+  $("gpsStatus").textContent=`Directorio listo: ${businesses.length} fichas y ${campaigns.length} campañas publicitarias.`;
+ }catch(e){
+  $("gpsStatus").textContent="No se pudieron cargar los datos. Revisá que las hojas estén compartidas como “Cualquier persona con el enlace: lector”.";
+  $("gpsStatus").textContent+=" Detalle: "+e.message;
+ }
+ showLocalities();updateBanners();initWelcome();
+}
+init();
+</script>
+</body>
+</html>
