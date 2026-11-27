@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -42,7 +43,7 @@ h2{font-size:clamp(19px,4vw,25px);color:var(--navy)}
 .hidden{display:none!important}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
 .business-list{display:grid;gap:12px}
-.biz{background:rgba(255,255,255,.94);border:2px solid #fff;border-radius:15px;padding:14px;box-shadow:0 0 0 1px rgba(7,85,139,.18),var(--shadow)}
+.biz{background:#fff;border:3px solid #fff;border-radius:15px;padding:14px;box-shadow:0 0 0 2px rgba(7,85,139,.28),0 5px 16px rgba(6,55,82,.20)}
 .biz.featured{border:2px solid #e6bd27}
 .biz h3{margin:0 0 6px;color:var(--navy);font-size:19px}
 .biz p{margin:5px 0;color:#39586a}
@@ -136,14 +137,14 @@ function inLocality(row,name){return yes(row[localityField(name)])}
 function active(row){return yes(row.activo)}
 function validNow(row){
  if(!active(row))return false;
- const end=row.fecha_fin;
- if(!end)return true;
- const d=new Date(end);if(Number.isNaN(d.getTime()))return true;
- d.setHours(23,59,59,999);return d>=new Date();
+ const today=new Date();today.setHours(0,0,0,0);
+ if(row.fecha_inicio){const start=new Date(row.fecha_inicio+"T00:00:00");if(!isNaN(start)&&start>today)return false}
+ if(row.fecha_fin){const end=new Date(row.fecha_fin+"T23:59:59");if(!isNaN(end)&&end<today)return false}
+ return true;
 }
-function waUrl(phone,message){
+function waUrl(phone,message=""){
  const digits=String(phone||"").replace(/\D/g,"");
- return digits?`https://wa.me/${digits}?text=${encodeURIComponent(message||"Vengo de Catracho Móvil y necesito sus servicios.")}`:"#";
+ return "https://wa.me/"+digits+(message?"?text="+encodeURIComponent(message):"");
 }
 function showModal(id){$(id).classList.add("open")}
 function hideModal(id){$(id).classList.remove("open")}
@@ -274,7 +275,7 @@ async function findLocalityByGPS(){
    ];
    const match=rules.find(([n,terms])=>terms.some(t=>place.includes(norm(t))));
    if(match){$("gpsStatus").textContent="Localidad identificada: "+match[0];selectLocality(match[0])}
-   else $("gpsStatus").textContent="No pudimos asociar tu ubicación a una de las 12 zonas. Elegí una localidad manualmente.";
+   else $("gpsStatus").textContent="No pudimos asociar tu ubicación a una de las 12 zonas. Elegí la localidad manualmente.";
   }catch(e){$("gpsStatus").textContent="No se pudo identificar la localidad automáticamente. Elegila manualmente."}
  },err=>{
   $("gpsStatus").textContent=err.code===1?"No diste permiso de ubicación. Podés elegir una localidad manualmente.":"No se pudo obtener tu ubicación. Elegí una localidad manualmente.";
@@ -296,7 +297,7 @@ async function init(){
  $("advertiseLink").href=waUrl(CFG.adminWhatsApp,CFG.adminMessage);
  try{
   [businesses,campaigns]=await Promise.all([fetchSheet(CFG.directorio),fetchSheet(CFG.banners)]);
-  $("gpsStatus").textContent=`Directorio listo: ${businesses.length} fichas y ${campaigns.length} campañas publicitarias.`;
+  $("gpsStatus").textContent="";
  }catch(e){
   $("gpsStatus").textContent="No se pudieron cargar los datos. Revisá que las hojas estén compartidas como “Cualquier persona con el enlace: lector”.";
   $("gpsStatus").textContent+=" Detalle: "+e.message;
