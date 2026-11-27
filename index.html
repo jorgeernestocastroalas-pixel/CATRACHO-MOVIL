@@ -60,13 +60,12 @@ h2{font-size:clamp(19px,4vw,25px);color:var(--navy)}
 .business-list{display:grid;gap:12px}
 #results{scroll-margin-top:64px}
 #home{scroll-margin-top:60px}
-.biz{background:#fff;border:3px solid #fff;border-radius:15px;padding:14px;box-shadow:0 0 0 2px rgba(7,85,139,.28),0 5px 16px rgba(6,55,82,.20)}
+.biz{background:#fff;border:3px solid #fff;border-radius:15px;padding:16px;box-shadow:0 0 0 2px rgba(7,85,139,.28),0 5px 16px rgba(6,55,82,.20);text-align:center}
 .biz.featured{border:2px solid #e6bd27}
-.biz h3{margin:0 0 6px;color:var(--navy);font-size:19px}
-.biz p{margin:5px 0;color:#39586a}
-.tag{display:inline-block;background:#fff2b9;color:#6b5100;border-radius:20px;padding:3px 9px;font-size:12px;font-weight:800;margin-bottom:6px}
-.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
-.action-btn{text-align:center;text-decoration:none;display:block;background:var(--blue);color:white}
+.biz h3{margin:0 0 12px;color:var(--navy);font-size:19px;text-align:center}
+.biz .tag{display:inline-block;background:#fff2b9;color:#6b5100;border-radius:20px;padding:3px 9px;font-size:12px;font-weight:800;margin-bottom:8px}
+.actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px;width:100%}
+.action-btn{text-align:center;text-decoration:none;display:flex;align-items:center;justify-content:center;min-width:0;background:var(--blue);color:white;padding:12px 8px;font-size:14px;line-height:1.2}
 .action-btn.wa{background:var(--green)}
 .empty,.status{padding:14px;color:var(--muted);text-align:center}
 footer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
@@ -78,8 +77,6 @@ footer a{display:flex;justify-content:center;align-items:center;text-align:cente
 .close{float:right;border:0;background:#eaf7fd;color:var(--blue2);border-radius:9px;padding:8px 12px;font-weight:900}
 input[type=search]{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;margin:8px 0}
 .notice{background:#fff9df;border:1px solid #f0d778;padding:12px;border-radius:12px}
-
-/* Anuncio dentro de la ficha comercial */
 .detail-ad{
   width:100%;
   min-height:50px;
@@ -96,7 +93,10 @@ input[type=search]{width:100%;padding:13px;border:1px solid var(--line);border-r
   max-width:100%;
   border:0;
 }
-
+@media(max-width:380px){
+  .actions{gap:5px}
+  .action-btn{font-size:12px;padding:11px 4px}
+}
 @media(min-width:650px){
   .locality-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
   .category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -346,17 +346,8 @@ function renderResults(){
     h.textContent=item.negocio||"Negocio";
     card.appendChild(h);
 
-    if(item.detalle){
-      const p=document.createElement("p");
-      p.textContent=item.detalle;
-      card.appendChild(p);
-    }
-
-    if(item.direccion){
-      const p=document.createElement("p");
-      p.textContent="📍 "+item.direccion;
-      card.appendChild(p);
-    }
+    // En el listado solo se muestra el nombre y los botones.
+    // La descripción y la dirección aparecen dentro de Ver ficha.
 
     const actions=document.createElement("div");
     actions.className="actions";
@@ -375,14 +366,6 @@ function renderResults(){
       w.rel="noopener";
       w.textContent="WhatsApp";
       actions.appendChild(w);
-    }
-
-    if(item.tel2){
-      const a=document.createElement("a");
-      a.className="action-btn";
-      a.href="tel:"+item.tel2.replace(/\D/g,"");
-      a.textContent="☎ Teléfono 2";
-      actions.appendChild(a);
     }
 
     const more=document.createElement("button");
